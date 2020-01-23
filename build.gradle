@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'com.palantir.git-version' version '0.10.1'
+}
+
+jar.archiveName = 'Practice.jar'
+
+group = 'land.pvp.practice'
+version = '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+defaultTasks 'clean', 'build'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.16.22'
+    compileOnly 'org.projectlombok:lombok:1.16.22'
+    compileOnly 'land.pvp.ivory:ivory:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'land.pvp.core:core:1.0.0'
+    compile 'land.pvp.scoreboardapi:scoreboardapi:1.0.0'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+processResources {
+    def details = versionDetails()
+
+    from('src/main/resources') {
+        include 'plugin.yml'
+        expand('version': details.gitHash)
+    }
+}

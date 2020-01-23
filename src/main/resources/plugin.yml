@@ -1,0 +1,5 @@
+name: Practice
+version: ${version}
+author: PvP Land Development Team
+main: land.pvp.practice.PracticePlugin
+depend: [Core]
